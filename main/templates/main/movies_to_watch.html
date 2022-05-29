@@ -1,0 +1,65 @@
+{% extends 'main/base.html' %}
+
+{% block title %}
+Добавление фильма к просмотру
+{% endblock %}
+
+{% block header %}
+Добавление фильма к просмотру
+{% endblock %}
+
+{% block body %}
+    <form method="post">
+        {% csrf_token %}
+        <div class="mb-3">
+            <label for="name" class="form-label">Имя фильма</label>
+            {{ form.name }}
+            <dib id="nameHelp", class="form-text"> ограничение 100 символов </dib>
+        </div>
+        <div class="mb-3">
+            <label for="genre" class="form-label">Жанр фильма</label>
+            {{ form.genre }}
+            <dib id="genreHelp", class="form-text"> ограничение 100 символов </dib>
+        </div>
+        <div class="mb-3">
+            <label for="author" class="form-label">Жанр фильма</label>
+            {{ form.author }}
+            <dib id="authorHelp", class="form-text"> ограничение 100 символов </dib>
+        </div>
+        <div class="mb-3">
+            <label for="description" class="form-label">Описание фильма</label>
+            {{ form.description }}
+            <dib id="descriptionHelp", class="form-text"> ограничение 100 символов </dib>
+        </div>
+        <button type="submit" class="btn btn-primary">Добавить</button>
+    </form>
+
+    {% if posts %}
+
+        {% csrf_token %}
+            <table class="table">
+              <thead>
+                <tr>
+                    <th scope="col">Post</th>
+                    <th scope="col">Created</th>
+                    <th scope="col">Posted</th>
+                    <th scope="col"></th>
+                </tr>
+              </thead>
+              <tbody>
+              {% for post in posts %}
+                    <tr>
+                        <th scope="row" > {{ post.title }}</th>
+                        <th scope="row"> {{ post.created }}</th>
+                        <th scope="row"> {{ post.posted }}</th>
+                    </tr>
+              {% endfor %}
+              </tbody>
+            </table>
+
+    {% else %}
+        <div class="alert alert-warning" role="alert">
+            <p> You have not posts yet </p>
+        </div>
+    {% endif %}
+{% endblock %}
