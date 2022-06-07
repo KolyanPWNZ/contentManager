@@ -1,7 +1,9 @@
 from django.shortcuts import render
+from django.core.paginator import Paginator
 
 from .models import Film
 from .forms import FilmForm
+
 
 # Create your views here.
 def index(request):
@@ -16,48 +18,30 @@ def index(request):
 
 
 def movies_to_watch(request):
-
     form = FilmForm()
     films = Film.objects.order_by('-id')
+    paginator = Paginator(films, 2)
+
+    page_number = request.GET.get('page', 1)
+    films_page = paginator.get_page(page_number)
+
+    if request.method == 'POST':
+        if 'add_film_in_db' in request.POST:
+            form = FilmForm(request.POST)
+            if form.is_valid():
+                form.save()
+        if 'selecter_action' in request.POST and 'selected_films' in request.POST:
+            print("YES")
+            print(request.POST)
+            if request.POST['action'] == 'delete_selected':
+                for fild_id in request.POST.getlist('selected_films'):
+                    Film.objects.filter(id=fild_id).delete()
+
     context = {
         'form': form,
         "title": "Publication",
         "header": "My publication",
-        "posts": films,
+        "films": films_page,
+        "page_number": page_number
     }
     return render(request, 'main/movies_to_watch.html', context)
-
-
-# def task(request):
-#     if request.method == 'POST':
-#         form = TaskForm(request.POST)
-#         if form.is_valid():
-#             form.save()
-#
-#     form = TaskForm()
-#     context = {
-#         'form': form
-#     }
-#     return render(request, 'main/task.html', context)
-#
-#
-# def post(request):
-#     if request.method == 'POST':
-#         form = PostForm(request.POST)
-#         if form.is_valid():
-#             form.save()
-#
-#     if request.method == 'GET':
-#         form = PostForm(request.GET)
-#         if form.is_valid():
-#             print(form)
-#
-#     form = PostForm()
-#     posts = Post.objects.order_by('-id')
-#     context = {
-#         'form': form,
-#         "title": "Publication",
-#         "header": "My publication",
-#         "posts": posts,
-#     }
-#     return render(request, 'main/post.html', context)
