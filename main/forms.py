@@ -40,4 +40,23 @@ class FilmForm(ModelForm):
                 "placeholder": "введите режисера фильма",
                 "type": "text"
             }),
+            "score": TextInput(attrs={
+                "class": "form-control",
+                "id": "score",
+                "aria-describedby": "authorHelp",
+                "type": "text"
+            }),
+            "comment": TextInput(attrs={
+                "class": "form-control",
+                "id": "author",
+                "aria-describedby": "authorHelp",
+                "placeholder": "введите режисера фильма",
+                "type": "text"
+            }),
+            "viewed": TextInput(attrs={
+                "class": "form-control",
+                "id": "author",
+                "aria-describedby": "authorHelp",
+                "type": "date"
+            }),
         }
