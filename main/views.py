@@ -20,7 +20,7 @@ def index(request):
 def movies_to_watch(request):
     form = FilmForm()
     films = Film.objects.order_by('-id')
-    paginator = Paginator(films, 2)
+    paginator = Paginator(films, 5)
 
     page_number = request.GET.get('page', 1)
     films_page = paginator.get_page(page_number)
@@ -36,6 +36,7 @@ def movies_to_watch(request):
             if request.POST['action'] == 'delete_selected':
                 for fild_id in request.POST.getlist('selected_films'):
                     Film.objects.filter(id=fild_id).delete()
+                    # ДОБАВИТЬ ЛОГИРОВАНИЕ
 
     context = {
         'form': form,
